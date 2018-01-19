@@ -1,3 +1,5 @@
+<%- | String  $ldap_conf,
+| -%>
 #!/bin/sh
 # vim: set ts=4:
 #
@@ -14,7 +16,7 @@
 #
 set -eu
 
-LDAPCONF='/etc/ssh/ldap.conf'
+LDAPCONF='<%= $ldap_conf %>'
 
 log() {
 	logger -s -t sshd -p "auth.$1" "$2"
