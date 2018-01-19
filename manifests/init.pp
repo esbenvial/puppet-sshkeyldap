@@ -48,6 +48,6 @@ class sshkeyldap (
   file { 'getkey-ldap.conf':
     mode    => '0644',
     path    => '/etc/ssh/getkey-ldap.conf',
-    content => template("${module_name}/getkey-ldap.conf.erb"),
+    content => epp("${module_name}/getkey-ldap.conf.epp"),
   }
 }
