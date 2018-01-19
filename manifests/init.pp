@@ -1,18 +1,36 @@
 # sshkeyldap class
 class sshkeyldap (
-  Boolean $gssapi      = $sshldap::params::gssapi,
-  String $attribute    = $sshldap::params::attribute,
-  String $objectclass  = $sshldap::params::objectclass,
-  String $keytab       = $sshldap::params::keytab,
-  Boolean $use_tls     = $sshldap::params::use_tls,
-  String $base_dn      = $sshldap::params::base_dn,
-  Integer $timeout     = $sshldap::params::timeout,
-  String $host         = $sshldap::params::host,
-  String $pubkey_attr  = $sshldap::params::pubkey_attr,
-  String $scope        = $sshldap::params::scope,
-  String $sshd_service = $sshldap::params::sshd_service,
-  String $path         = $sshldap::params::path,
-) inherits sshkeyldap::params {
+  Boolean $gssapi      = false,
+  String $attribute    = 'uid',
+  String $objectclass  = 'posixAccount',
+  String $keytab       = '/etc/krb5.keytab',
+  Boolean $use_tls     = true,
+  String $base_dn      = undef,
+  Integer $timeout     = 5,
+  String $host         = undef,
+  String $pubkey_attr  = 'sshPublicKey',
+  String $scope        = 'subtree',
+  String $path         = '/usr/local/bin',
+) {
+
+  case $::osfamily {
+    'SuSE': {
+      $sshd_service     = 'sshd'
+      $lua_package      = 'lua51'
+      $lua_ldap_package = undef
+    }
+    'Debian': {
+      $sshd_service     = 'ssh'
+      $lua_package      = 'lua5.1'
+      $lua_ldap_package = 'lua-ldap'
+    }
+    'RedHat': {
+      $sshd_service     = 'sshd'
+      $lua_package      = 'lua'
+      $lua_ldap_package = 'lua-ldap'
+    }
+    default: {}
+  }
 
   package { $lua_package:
     ensure => present,
