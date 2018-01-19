@@ -23,7 +23,7 @@ class sshkeyldap (
 
   file { 'ssh-getkey-ldap':
     mode   => '0755',
-    path   => "${path$}/ssh-getkey-ldap",
+    path   => "${path}/ssh-getkey-ldap",
     source => "puppet:///modules/${module_name}/ssh-getkey-ldap",
     notify => Service[$sshd_service],
   }
